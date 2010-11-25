@@ -1,0 +1,7 @@
+A collection of short programs I wrote for computer science revision.
+
+- substr.py - Determine whether one string is a substring of another.
+- rectangles/ - Find overlapping rectangles. A java program, utilising a quad-tree.
+- rectangles_py/ - Find overlapping rectangles. A lighter-weight python program, utilising a BST.
+- dll_rem.py - Remove an item from a doubly-linked list.
+- min_heap/ - Java implementation of a priority queue using a min-heap.

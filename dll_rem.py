@@ -36,4 +36,5 @@ class DLL:
             if node.next:
                 node.next.prev = node.prev
 
-dll = Node()
+dll = DLL()
+

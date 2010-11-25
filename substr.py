@@ -30,5 +30,4 @@ if len(sys.argv) == 3:
 
 
 
-# This is O(n^2), or rather, O(len(needle)*len(haystack)). Could I make it O(n)?
-# Do we really have to go back to the start of a segment after a is_substr_at() test fails?
+# This is O(n^2), or rather, O(len(needle)*len(haystack)). Could it be improved?

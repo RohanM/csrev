@@ -31,8 +31,8 @@ class Node:
             return self.right.get(key) if self.right else None
 
 
-    # Get all values associated with the specified key
     def get_all(self, key):
+        """ Get all values associated with the specified key """
         if key == self.key:
             return [self.value] + (self.right.get_all(key) if self.right else [])
         elif key < self.key:
@@ -94,8 +94,8 @@ class Node:
         return successor
 
 
-    # Display, in-order traversal
     def display(self):
+        """ Display the tree using an in-order traversal. """
         if self.left:
             self.left.display()
         print(self.value)
@@ -137,16 +137,16 @@ class BST:
 
 
 # Tests
-from range import *
-
-t = BST()
-
-t.add(Range(1, 1), 'one')
-t.add(Range(4, 4), 'four')
-t.add(Range(2, 2), 'two')
-t.add(Range(3, 3), 'three')
-t.add(Range(5, 5), 'five')
-
-t.remove(Range(1, 1))
-
-print(t.vis())
+#from range import *
+#
+#t = BST()
+#
+#t.add(Range(1, 1), 'one')
+#t.add(Range(4, 4), 'four')
+#t.add(Range(2, 2), 'two')
+#t.add(Range(3, 3), 'three')
+#t.add(Range(5, 5), 'five')
+#
+#t.remove(Range(1, 1))
+#
+#print(t.vis())

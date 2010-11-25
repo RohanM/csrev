@@ -33,7 +33,7 @@ for edge in edges:
         for overlap in overlaps:
             print("%s <--> %s" % (edge['r'], overlap['r']))
 
-        # Add to BST
+        # Add edge to BST
         t.add(Range(edge['y0'], edge['y1']), edge)
     else:
         t.remove(Range(edge['y0'], edge['y1']))

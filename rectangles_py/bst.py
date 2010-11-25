@@ -41,34 +41,46 @@ class Node:
             return self.right.get_all(key) if self.right else []
 
 
-    # TODO: Refactor from here
-
     def remove(self, key):
+        """
+        Remove a node from the tree.
+        Returns False if the root node does not need modifying,
+        otherwise returns the new root node.
+        """
+        root = False
+
         if self.key.exactly_equal_to(key):
-            if self.num_children() == 0:
-                if self.parent.left == self:
-                    self.parent.left = None
-                else:
-                    self.parent.right = None
-            elif self.num_children() == 1:
-                if self.parent.left == self:
-                    self.parent.left = self.left or self.right
-                else:
-                    self.parent.right = self.left or self.right
+            # Determine which node to splice out
+            if not self.left or not self.right:
+                splicee = self
             else:
-                # Splice out root's successor, then place its data (key, value) into this node
-                successor = self.get_successor()
-                if successor.parent.left == successor:
-                    successor.parent.left = successor.right
-                else:
-                    successor.parent.right = successor.right
-                self.key = successor.key
-                self.value = successor.value
+                splicee = self.get_successor()
+
+            # Find the non-nil child of this node (if any)
+            splicer = splicee.left or splicee.right
+
+            # Splice out the node
+            if splicer:
+                splicer.parent = splicee.parent
+            if splicee.parent == None:
+                root = splicer
+            elif splicee == splicee.parent.left:
+                splicee.parent.left = splicer
+            else:
+                splicee.parent.right = splicer
+
+            # If the successor was spliced out, copy its data to the note to remove
+            if splicee != self:
+                self.key = splicee.key
+                self.value = splicee.value
+
         else:
             if key < self.key and self.left:
-                self.left.remove(key)
+                root = self.left.remove(key)
             elif key > self.key and self.right:
-                self.right.remove(key)
+                root = self.right.remove(key)
+
+        return root
 
 
     def num_children(self):
@@ -115,25 +127,12 @@ class BST:
         return self.root.get_all(key) if self.root else []
 
     def remove(self, key):
-        if self.root.key.exactly_equal_to(key):
-            if self.root.num_children() == 0:
-                self.root = None
-            elif self.root.num_children() == 1:
-                self.root = self.root.left or self.root.right
-            else:
-                # Splice out root's successor, then place its data (key, value) into root
-                successor = self.root.get_successor()
-                if successor.parent.left == successor:
-                    successor.parent.left = successor.right
-                else:
-                    successor.parent.right = successor.right
-                self.key = successor.key
-                self.value = successor.value
-        else:
-            self.root.remove(key)
+        new_root = self.root.remove(key)
+        if new_root != False:
+            self.root = new_root
 
     def vis(self):
-        return self.root.vis()
+        return self.root.vis() if self.root else ""
 
 
 
@@ -143,11 +142,11 @@ from range import *
 t = BST()
 
 t.add(Range(1, 1), 'one')
+t.add(Range(4, 4), 'four')
 t.add(Range(2, 2), 'two')
 t.add(Range(3, 3), 'three')
-t.add(Range(4, 4), 'four')
 t.add(Range(5, 5), 'five')
 
-t.remove(Range(5, 5))
+t.remove(Range(1, 1))
 
 print(t.vis())

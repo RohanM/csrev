@@ -5,3 +5,5 @@ A collection of short programs I wrote for computer science revision.
 - rectangles_py/ - Find overlapping rectangles. A lighter-weight python program, utilising a BST.
 - dll_rem.py - Remove an item from a doubly-linked list.
 - min_heap/ - Java implementation of a priority queue using a min-heap.
+- die.py - Simulate a dice roll using coin flips
+- TargetSum.java - Given an unsorted array of integers, determine if any two add to a particular sum

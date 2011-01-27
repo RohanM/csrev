@@ -25,10 +25,36 @@
 (defun select (selector-fn)
   (remove-if-not selector-fn *db*))
 
-(defun where (&key title artist rating (ripped nil ripped-p))
-  #'(lambda (cd)
-      (and
-       (if title (equal (getf cd :title) title) t)
-       (if artist (equal (getf cd :artist) artist) t)
-       (if rating (equal (getf cd :rating) rating) t)
-       (if ripped-p (equal (getf cd :ripped) ripped) t))))
+(defun delete-rows (selector-fn)
+  (setf *db* (remove-if selector-fn *db*)))
+
+
+;; where
+
+(defun make-comparison-expr (field value)
+  `(equal (getf cd ,field) ,value))
+
+(defun make-comparisons-list (fields)
+  (loop while fields
+     collecting (make-comparison-expr (pop fields) (pop fields))))
+
+(defmacro where (&rest clauses)
+  `#'(lambda (cd) (and ,@(make-comparisons-list clauses))))
+
+
+;; update
+
+(defun make-update-expr (field value)
+  `(setf (getf row ,field) ,value))
+
+(defun make-updates-list (fields)
+  (loop while fields
+     collecting (make-update-expr (pop fields) (pop fields))))
+
+(defmacro update (selector-fn &rest clauses)
+  `(setf *db*
+	 (mapcar
+	  #'(lambda (row)
+	      (when (funcall ,selector-fn row)
+		,@(make-updates-list clauses))
+	      row) *db*)))
